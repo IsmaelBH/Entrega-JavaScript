@@ -70,7 +70,7 @@ while (nombreUsuario != "SALIR") {
         console.log("6 cuota: 35% INTERES");
         console.log("9 cuota: 50% INTERES");
         console.log("12 cuota: 75% INTERES");
-        let cuotas = prompt("Ingrese la cuota:");
+        let cuotas = prompt("Ingrese la cuota 1, 3, 6, 9 o 12:");
 
         let objPrestamo = new Prestamo(nombreUsuario, monto, cuotas);
         objPrestamo.calcularCuotas(monto, cuotas);
