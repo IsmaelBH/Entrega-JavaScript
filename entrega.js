@@ -80,7 +80,7 @@ while (nombreUsuario != "SALIR") {
 
 }
 
-let opcion = prompt("1 - Ver todos los Prestamos 2) Ver tus Prestamos");
+let opcion = prompt("1 - Ver todos los Prestamos | 2) Ver tus Prestamos");
 
 let nombre;
 
