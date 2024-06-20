@@ -1,90 +1,108 @@
 
 class Prestamo {
-    constructor(monto, cuotas, esSocio) {
+    constructor(nombre, monto, cuota) {
+        this.nombre = nombre;
         this.monto = monto;
-        this.cuotas = cuotas;
-        this.esSocio = esSocio;
-        this.interes = calcularInteres(monto, cuotas);
-        this.descuento = descuentosSocio(esSocio, monto);
-        this.montoFinal = monto + this.interes;
+        this.cuotas = cuota;
+        this.montoFinal = 0;
     }
 
-    calcularMontoFinalConDescuento() {
-        return this.montoFinal - this.descuento;
+    calcularCuotas(monto, cuotas) {
+        let interes = 0;
+
+        if (cuotas == 1) {
+            this.montoFinal = monto;
+        }
+        else if (cuotas == 3) {
+            interes = monto * 0.20;
+            this.montoFinal = monto + interes;
+        }
+        else if (cuotas == 6) {
+            interes = monto * 0.35;
+            this.montoFinal = monto + interes;
+        }
+        else if (cuotas == 9) {
+            interes = monto * 0.50;
+            this.montoFinal = monto + interes;
+        }
+        else if (cuotas == 12) {
+            interes = monto * 0.75;
+            this.montoFinal = monto + interes;
+        }
+
+
+    }
+
+    getDatosPrestamo() {
+        console.log("<----------Prestamo----------->");
+        console.log("Titular: ", this.nombre);
+        console.log("Monto: ", this.monto);
+        console.log("Cuotas: ", this.cuotas);
+        console.log("Pagas: ", this.montoFinal);
+        console.log();
     }
 }
 
-let prestamos = [];
 
-function datosPrestamo(monto, cuotas, esSocio) {
-    const prestamo = new Prestamo(monto, cuotas, esSocio);
-    prestamos.push(prestamo);
+function filtrarPrestamos(objPrestamo) {
+
+    return objPrestamo.nombre == nombre
+}
+
+
+let nombreUsuario = "";
+let listaPrestamos = [];
+
+
+while (nombreUsuario != "SALIR") {
 
     console.log("<----------Datos del Prestamo----------->");
-    console.log("Monto: ", prestamo.monto);
-    console.log("Cuotas: ", prestamo.cuotas);
-    console.log("Socio: ", prestamo.esSocio);
-    console.log("Descuento Socio: ", prestamo.descuento);
-    console.log("Monto Final: ", prestamo.montoFinal);
-    console.log("Monto Final + Descuento: ", prestamo.calcularMontoFinalConDescuento());
-}
+    console.log("");
 
-function descuentosSocio(esSocio, monto) {
-    let descuento = 0;
+    nombreUsuario = prompt("Igrese su nombre o SALIR para finalizar");
 
-    if (esSocio === "SI") {
-        descuento = monto * 0.10;
+    if (nombreUsuario != "SALIR") {
+
+        let monto = prompt("Ingrese el monto:");
+        monto = parseInt(monto);
+        console.log("1 cuota: % INTERES");
+        console.log("3 cuota: 20% INTERES");
+        console.log("6 cuota: 35% INTERES");
+        console.log("9 cuota: 50% INTERES");
+        console.log("12 cuota: 75% INTERES");
+        let cuotas = prompt("Ingrese la cuota:");
+
+        let objPrestamo = new Prestamo(nombreUsuario, monto, cuotas);
+        objPrestamo.calcularCuotas(monto, cuotas);
+        listaPrestamos.push(objPrestamo);
+        console.log("Gracias por elegirnos");
     }
 
-    return descuento;
 }
 
-function calcularInteres(monto, cuotas) {
-    let interes = 0;
+let opcion = prompt("1 - Ver todos los Prestamos 2) Ver tus Prestamos");
 
-    if (cuotas === 1) {
-        return interes;
-    } else if (cuotas === 3) {
-        interes = monto * 0.20;
-    } else if (cuotas === 6) {
-        interes = monto * 0.35;
-    } else if (cuotas === 9) {
-        interes = monto * 0.55;
-    } else if (cuotas === 12) {
-        interes = monto * 0.75;
-    }
+let nombre;
 
-    return interes;
-}
-
-function buscarPrestamoPorMonto(monto) {
-    return prestamos.find(prestamo => prestamo.monto === monto);
-}
-
-function filtrarPrestamosPorCuotas(cuotas) {
-    return prestamos.filter(prestamo => prestamo.cuotas === cuotas);
-}
-
-function filtrarPrestamosPorSocio(esSocio) {
-    return prestamos.filter(prestamo => prestamo.esSocio === esSocio);
-}
-
-console.log("Bienvenido/a a su prestamo de confianza!");
-
-let monto = "";
-
-while (monto !== "SALIR") {
-    monto = prompt("Ingrese el monto que quiere solicitar o SALIR para finalizar");
-
-    if (monto !== "SALIR") {
-        monto = parseFloat(monto);
-        let cuotas = parseInt(prompt("Ingrese la cantidad de cuotas: 1,3,6,9,12"));
-        let esSocio = prompt("Es socio? SI | NO");
-        datosPrestamo(monto, cuotas, esSocio);
+if (opcion == "1") {
+    console.log("Historial de prestamos");
+    for (let prestamo of listaPrestamos) {
+        prestamo.getDatosPrestamo();
     }
 }
 
+else if (opcion == 2) {
 
-console.log("Buscar préstamo con monto 10000:", buscarPrestamoPorMonto(10000));
-console.log("Filtrar préstamos con 3 cuotas:", filtrarPrestamosPorCuotas(3));
-console.log("Filtrar préstamos de socios:", filtrarPrestamosPorSocio("SI"));
+    nombre = prompt("Ingrese el nombre que quiere buscar");
+    let resultadoFilter = listaPrestamos.filter(filtrarPrestamos);
+
+    if (resultadoFilter.length != 0) {
+        for (let prestamo of resultadoFilter) {
+            prestamo.getDatosPrestamo();
+        }
+    }
+    else {
+        console.log("EL usuario no tiene prestamos registrados");
+    }
+}
+
